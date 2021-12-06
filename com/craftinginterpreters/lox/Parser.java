@@ -21,7 +21,7 @@ class Parser {
       return null;
     }
   }
-  
+
   private Expr expression() {
     return equality();
   }
@@ -102,6 +102,9 @@ class Parser {
     throw error(peek(), "Expect expression.");
   }
   
+  // The match() method checks to see if the current token has any of the 
+  // given types.  If so, it consumes the token and returns true. Otherwise, 
+  // it returns false and leaves the current token alone. 
   private boolean match(TokenType... types) {
     for (TokenType type : types) {
       if (check(type)) {
@@ -113,30 +116,40 @@ class Parser {
     return false;
   }
 
+  // The consume() method is similar to match() in that it checks to see if
+  // the next token is of the expected type. If so, it consumes the token 
+  // and everything is groovy. If some other token is there, then we’ve hit
+  // an error.
   private Token consume(TokenType type, String message) {
     if (check(type)) return advance();
 
     throw error(peek(), message);
   }
 
+  // The check() method returns true if the current token is of the given type. 
+  // Unlike match(), it never consumes the token, it only looks at it.
   private boolean check(TokenType type) {
     if (isAtEnd()) return false;
     return peek().type == type;
   }
 
+  // The advance() method consumes the current token and returns it.
   private Token advance() {
     if (!isAtEnd()) current++;
     return previous();
   }
 
+  // The isAtEnd() method checks if we’ve run out of tokens to parse.
   private boolean isAtEnd() {
     return peek().type == EOF;
   }
 
+  // The peek() method returns the current token we have yet to consume.
   private Token peek() {
     return tokens.get(current);
   }
 
+  // The previous() method returns the most recently consumed token.
   private Token previous() {
     return tokens.get(current - 1);
   }
@@ -146,6 +159,12 @@ class Parser {
     return new ParseError();
   }
 
+  // The synchronize method() discards tokens until it thinks it has
+  // found a statement boundary. After catching a ParseError, we’ll
+  // call this and then we are hopefully back in sync. When it works
+  // well, we have discarded tokens that would have likely caused
+  // cascaded errors anyway, and now we can parse the rest of the
+  // file starting at the next statement.
   private void synchronize() {
     advance();
 
