@@ -1,0 +1,4 @@
+# source ./maket
+# compile tool java source files to class files
+
+javac com/craftinginterpreters/tool/*.java

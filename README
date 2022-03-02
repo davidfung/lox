@@ -1,5 +1,9 @@
-To make:
-$ source ./make
+Full build and run
 
-To run:
-$ source ./run
+# build and run the tools
+$ ./maket
+$ ./runt
+
+# build and run the interpreter
+$ ./make
+$ ./run
