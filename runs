@@ -1,1 +1,1 @@
-java com.craftinginterpreters.lox.Lox script
+java com.craftinginterpreters.lox.Lox $1
