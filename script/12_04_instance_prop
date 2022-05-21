@@ -1,0 +1,6 @@
+// Test a class instance property getter and setter.
+
+class Bagel {}
+var bagel = Bagel();
+bagel.flavor = "cream cheese";
+print bagel.flavor; // Prints "cream cheese".
