@@ -1,0 +1,10 @@
+# compile tool java source files to class files
+# build the tool
+# compile lox java source files to class files
+
+# usage:
+# $ ./makeall
+
+javac com/craftinginterpreters/tool/*.java
+java com.craftinginterpreters.tool.GenerateAst com/craftinginterpreters/lox 
+javac com/craftinginterpreters/lox/*.java
