@@ -32,9 +32,12 @@ class Parser {
 
   private Stmt declaration() {
     try {
-      if (match(CLASS)) return classDeclaration();
-      if (match(FUN)) return function("function");
-      if (match(VAR)) return varDeclaration();
+      if (match(CLASS))
+        return classDeclaration();
+      if (match(FUN))
+        return function("function");
+      if (match(VAR))
+        return varDeclaration();
 
       return statement();
     } catch (ParseError error) {
@@ -56,14 +59,20 @@ class Parser {
 
     return new Stmt.Class(name, methods);
   }
-  
+
   private Stmt statement() {
-    if (match(FOR)) return forStatement();
-    if (match(IF)) return ifStatement();
-    if (match(PRINT)) return printStatement();
-    if (match(RETURN)) return returnStatement();
-    if (match(WHILE)) return whileStatement();
-    if (match(LEFT_BRACE)) return new Stmt.Block(block());
+    if (match(FOR))
+      return forStatement();
+    if (match(IF))
+      return ifStatement();
+    if (match(PRINT))
+      return printStatement();
+    if (match(RETURN))
+      return returnStatement();
+    if (match(WHILE))
+      return whileStatement();
+    if (match(LEFT_BRACE))
+      return new Stmt.Block(block());
 
     return expressionStatement();
   }
@@ -79,7 +88,7 @@ class Parser {
     } else {
       initializer = expressionStatement();
     }
-  
+
     Expr condition = null;
     if (!check(SEMICOLON)) {
       condition = expression();
@@ -100,20 +109,21 @@ class Parser {
               new Stmt.Expression(increment)));
     }
 
-    if (condition == null) condition = new Expr.Literal(true);
+    if (condition == null)
+      condition = new Expr.Literal(true);
     body = new Stmt.While(condition, body);
 
     if (initializer != null) {
       body = new Stmt.Block(Arrays.asList(initializer, body));
     }
-    
+
     return body;
   }
-  
+
   private Stmt ifStatement() {
     consume(LEFT_PAREN, "Expect '(' after 'if'.");
     Expr condition = expression();
-    consume(RIGHT_PAREN, "Expect ')' after if condition."); 
+    consume(RIGHT_PAREN, "Expect ')' after if condition.");
 
     Stmt thenBranch = statement();
     Stmt elseBranch = null;
@@ -199,7 +209,7 @@ class Parser {
     consume(RIGHT_BRACE, "Expect '}' after block.");
     return statements;
   }
-  
+
   private Expr assignment() {
     Expr expr = or();
 
@@ -208,11 +218,14 @@ class Parser {
       Expr value = assignment();
 
       if (expr instanceof Expr.Variable) {
-        Token name = ((Expr.Variable)expr).name;
+        Token name = ((Expr.Variable) expr).name;
         return new Expr.Assign(name, value);
+      } else if (expr instanceof Expr.Get) {
+        Expr.Get get = (Expr.Get) expr;
+        return new Expr.Set(get.object, get.name, value);
       }
 
-      error(equals, "Invalid assignment target."); 
+      error(equals, "Invalid assignment target.");
     }
 
     return expr;
@@ -312,7 +325,7 @@ class Parser {
     }
 
     Token paren = consume(RIGHT_PAREN,
-                          "Expect ')' after arguments.");
+        "Expect ')' after arguments.");
 
     return new Expr.Call(callee, paren, arguments);
   }
@@ -320,9 +333,13 @@ class Parser {
   private Expr call() {
     Expr expr = primary();
 
-    while (true) { 
+    while (true) {
       if (match(LEFT_PAREN)) {
         expr = finishCall(expr);
+      } else if (match(DOT)) {
+        Token name = consume(IDENTIFIER,
+            "Expect property name after '.'.");
+        expr = new Expr.Get(expr, name);
       } else {
         break;
       }
