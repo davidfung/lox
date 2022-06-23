@@ -1,0 +1,40 @@
+// Test 1
+// Expected Result:
+// Foo instance
+// Foo instance
+// Foo instance
+
+class Foo {
+  init() {
+    print this;
+  }
+}
+
+var foo = Foo();
+print foo.init();
+
+// Test 2
+// Returning from init()
+// Result:
+// Error: "Can't return a value from an initializer."
+
+// class Foo2 {
+//     init() {
+//       return "something else";
+//     }
+//   }
+
+// Test 3
+// Result:
+// Foo3 instance
+
+class Foo3 {
+    init() {
+      return;
+    }
+  }
+
+  var foo3 = Foo3();
+  print foo3.init();
+
+// End
