@@ -1,0 +1,13 @@
+class Foo {
+  init() {
+    print "Foo1";
+  }
+}
+
+class Foo {
+    init() {
+      print "Foo2";
+    }
+  }
+    
+var foo = Foo();
