@@ -1,0 +1,18 @@
+// Test 1 
+
+class Doughnut {
+  // General doughnut stuff...
+}
+
+class BostonCream < Doughnut {
+  // Boston Cream-specific stuff...
+}
+
+// Test 2 - cyclic inheritance
+////class Oops < Oops {}
+
+// Test 3 - inherit not a class
+//// var NotAClass = "I am totally not a class";
+//// class Subclass < NotAClass {} // ?!
+
+// END
